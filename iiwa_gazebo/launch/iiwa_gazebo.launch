@@ -10,10 +10,10 @@
     <!-- |	  One can choose to have a joint trajectory controller or                        | -->
     <!-- |    controllers for the single joints, using the "trajectory" argument.            | -->
     <!-- ===================================================================================== -->
-    
+    <!-- hardware_interface to use : PositionJointInterface, EffortJointInterface, VelocityJointInterface. -->
     <arg name="hardware_interface" default="PositionJointInterface" />
     <arg name="robot_name" default="iiwa" />
-    <arg name="model" default="iiwa14"/>
+    <arg name="model" default="iiwa7"/>
     <arg name="trajectory" default="true"/>
     
     <!-- Loads the Gazebo world. -->

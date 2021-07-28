@@ -1,5 +1,6 @@
 # Goal
 CartesianPose cartesian_pose
+float32 force_threshold
 
 ---
 # Result

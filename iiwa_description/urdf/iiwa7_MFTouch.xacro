@@ -285,7 +285,7 @@
     
     <joint name="${robot_name}_joint_7" type="revolute">
       <parent link="${robot_name}_link_6"/>
-      <child link="${robot_name}_link_7"/>
+      <child link="${robot_name}_link_7_MFTouch"/>
       <origin xyz="0 0.081 0.06070" rpy="${- PI / 2} ${PI} 0"/>
       <axis xyz="0 0 1"/>
       <limit lower="${-175 * PI / 180}" upper="${175 * PI / 180}"
@@ -297,7 +297,7 @@
       <dynamics damping="${joint_damping}"/>
     </joint>
     
-    <link name="${robot_name}_link_7">
+    <link name="${robot_name}_link_7_MFTouch">
       <inertial>
         <origin xyz="0 0 0.02" rpy="0 0 0"/>
         <mass value="3.129"/>
@@ -305,7 +305,7 @@
       </inertial>
       
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 0 -0.0005" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://iiwa_description/meshes/iiwa7/visual/iiwa_MFTouch_m.stl"/>
         </geometry>
@@ -313,7 +313,7 @@
       </visual>
       
       <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 0 -0.0005" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://iiwa_description/meshes/iiwa7/collision/iiwa_MFTouch_m.stl"/>
         </geometry>
@@ -321,160 +321,15 @@
       </collision>
     </link>
     
-    <joint name="${robot_name}_joint_8" type="fixed">
-      <parent link="${robot_name}_link_7"/>
-      <child link="${robot_name}_link_graspbase"/>
-      <origin xyz="0 0 0.071" rpy="0 0 0"/>
-    </joint>
-    
-    <link name="${robot_name}_link_graspbase">
-      <inertial>
-        <origin xyz="0 0 -0.025" rpy="0 0 0"/>
-        <mass value="0.001"/>
-        <inertia ixx="0.0001"  ixy="0"  ixz="0" iyy="0.0001" iyz="0" izz="0.0001" />
-      </inertial>
-      
-      <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <mesh filename="package://iiwa_description/meshes/iiwa7/visual/graspbase.STL"/>
-        </geometry>
-        <material name="Grey"/>
-      </visual>
-      
-      <!--collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <mesh filename="package://iiwa_description/meshes/iiwa7/visual/graspbase.STL"/>
-        </geometry>
-        <material name="Grey"/>
-      </collision-->
-    </link>
-    
-    <joint name="${robot_name}_joint_9" type="revolute">
-      <parent link="${robot_name}_link_graspbase"/>
-      <child link="${robot_name}_link_fingerbase"/>
-      <origin xyz="0.075 0 0.169" rpy="0 0 0"/>
-      <axis xyz="0 0 1"/>
-      <limit lower="${-175 * PI / 180}" upper="${175 * PI / 180}"
-             effort="${max_effort}" velocity="0.5" />
-      <safety_controller soft_lower_limit="${-173 * PI / 180}"
-                         soft_upper_limit="${173 * PI / 180}"
-                         k_position="${safety_controller_k_pos}"
-                         k_velocity="${safety_controller_k_vel}"/> 
-      <dynamics damping="${joint_damping}"/>
-    </joint>
-    <link name="${robot_name}_link_fingerbase">
-      <inertial>
-        <origin xyz="0 0 0.0" rpy="0 0 0"/>
-        <mass value="0.1"/>
-        <inertia ixx="0.001"  ixy="0.0"  ixz="0" iyy="0.001" iyz="0" izz="0.001" />
-      </inertial>
-      
-      <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <mesh filename="package://iiwa_description/meshes/iiwa7/visual/fingerbase.STL"/>
-        </geometry>
-        <material name="Grey"/>
-      </visual>
-      
-      <!--collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <mesh filename="package://iiwa_description/meshes/iiwa7/collision/fingerbase.STL"/>
-        </geometry>
-        <material name="Grey"/>
-      </collision-->
-    </link>
-    <joint name="${robot_name}_joint_10" type="prismatic">
-        <parent link="${robot_name}_link_fingerbase"/>
-        <child link="${robot_name}_link_finger1"/>
-        <origin xyz="0.0 -0.0105 0.024" rpy="0 0 0"/>
-        <axis xyz="0 1 0"/>
-        <limit lower="-0.007" upper="0.0105"
-               effort="${max_effort}" velocity="${max_velocity}" />
-        <safety_controller soft_lower_limit="-0.009"
-                           soft_upper_limit="0.0103"
-                           k_position="${safety_controller_k_pos}"
-                           k_velocity="${safety_controller_k_vel}"/> 
-        <dynamics damping="${joint_damping}"/>
-    </joint>
-    <link name="${robot_name}_link_finger1">
-      <inertial>
-        <origin xyz="0 0 0.02" rpy="0 0 0"/>
-        <mass value="10"/>
-        <inertia ixx="0.001"  ixy="0.0"  ixz="0" iyy="0.001" iyz="0" izz="0.001" />
-      </inertial>
-      
-      <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <mesh filename="package://iiwa_description/meshes/iiwa7/visual/finger.STL"/>
-        </geometry>
-        <material name="Grey"/>
-      </visual>
-      
-      <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <mesh filename="package://iiwa_description/meshes/iiwa7/collision/finger.STL"/>
-        </geometry>
-        <material name="Grey"/>
-      </collision>
-    </link>
-    <joint name="${robot_name}_joint_11" type="prismatic">
-      <parent link="${robot_name}_link_fingerbase"/>
-      <child link="${robot_name}_link_finger2"/>
-      <origin xyz="0.0 0.0105 0.024" rpy="0 0 ${PI}"/>
-      <axis xyz="0 1 0"/>
-      <limit lower="-0.0105" upper="0.007"
-             effort="${max_effort}" velocity="${max_velocity}" />
-      <safety_controller soft_lower_limit="-0.0103"
-                         soft_upper_limit="0.005"
-                         k_position="${safety_controller_k_pos}"
-                         k_velocity="${safety_controller_k_vel}"/> 
-      <dynamics damping="${joint_damping}"/>
-    </joint>
-    <link name="${robot_name}_link_finger2">
-      <inertial>
-        <origin xyz="0 0 0.02" rpy="0 0 0"/>
-        <mass value="10"/>
-        <inertia ixx="0.001"  ixy="0.0"  ixz="0" iyy="0.001" iyz="0" izz="0.001" />
-      </inertial>
-      
-      <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <mesh filename="package://iiwa_description/meshes/iiwa7/visual/finger.STL"/>
-        </geometry>
-        <material name="Grey"/>
-      </visual>
-      
-      <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <mesh filename="package://iiwa_description/meshes/iiwa7/collision/finger.STL"/>
-        </geometry>
-        <material name="Grey"/>
-      </collision>
-    </link>
     <joint name="${robot_name}_joint_ee" type="fixed">
-      <parent link="${robot_name}_link_graspbase"/>
+      <parent link="${robot_name}_link_7_MFTouch"/>
       <child link="${robot_name}_link_ee"/>
-      <origin xyz="0.077 0 0.223" rpy="0 0 0"/>
+      <origin xyz="0 0 0.071" rpy="0 0 0"/>
     </joint>
     
     <link name="${robot_name}_link_ee">
     </link>
-    <joint name="${robot_name}_joint_camera" type="fixed">
-      <parent link="${robot_name}_link_graspbase"/>
-      <child link="${robot_name}_link_camera"/>
-      <origin xyz="0.077 0 0.223" rpy="0 ${-PI/2} 0"/>
-    </joint>
     
-    <link name="${robot_name}_link_camera">
-    </link>
     <!--Extensions -->
     <xacro:iiwa_gazebo robot_name="${robot_name}" />
     <xacro:iiwa_transmission hardware_interface="${hardware_interface}"/>

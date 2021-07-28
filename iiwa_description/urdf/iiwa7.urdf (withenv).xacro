@@ -14,7 +14,7 @@
   <!-- Fix to world just for testing -->
   <link name="world"/>
   <joint name="world_base_joint" type="fixed">
-    <origin xyz="-0.63 -0.35 0.25" rpy="0 0 0"/>
+    <origin xyz="-0.63 -0.47 0.25" rpy="0 0 0"/>
     <parent link="world"/>
     <child link="base_link"/>
   </joint>
@@ -46,12 +46,12 @@
       <material name="Grey"/>
     </collision>
     
-    <!--self_collision_checking>
+    <self_collision_checking>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
         <capsule radius="0.15" length="0.25"/>
       </geometry>
-    </self_collision_checking-->
+    </self_collision_checking>
     
   </link>
   <link name="base_link">
@@ -85,9 +85,26 @@
     </self_collision_checking>
     
   </link>
+  <gazebo reference="base_link">
+    <material>Gazebo/Grey</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+  </gazebo>
   <!--iiwa-->
   <xacro:iiwa7 hardware_interface="$(arg hardware_interface)" robot_name="$(arg robot_name)" parent="base_link">
-    <origin xyz="0.087 0.15 1.246" rpy="0 -1.5708 2.3562" />
+    <origin xyz="0.2056 0 0.58" rpy="0 0 ${1*PII/2}" />
   </xacro:iiwa7>
+    <!--iiwa-->
+  <xacro:iiwa7 hardware_interface="$(arg hardware_interface)" robot_name="right" parent="base_link">
+    <origin xyz="-0.2056 0 0.58" rpy="0 0 ${-1*PII/2}" />
+  </xacro:iiwa7>
+      <!-- Load Gazebo lib and set the robot namespace -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/iiwa</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      <legacyModeNS>true</legacyModeNS>
+    </plugin>
+  </gazebo>
   
 </robot>
