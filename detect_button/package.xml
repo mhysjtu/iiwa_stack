@@ -59,6 +59,7 @@
   <exec_depend>actionlib</exec_depend>
   <exec_depend>iiwa_msgs</exec_depend>
   <exec_depend>roscpp</exec_depend>
+  <exec_depend>gripper_msgs</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

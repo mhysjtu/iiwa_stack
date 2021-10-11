@@ -9,7 +9,7 @@
 #include <iiwa_msgs/ConfigureControlMode.h>
 #include <iiwa_msgs/ControlMode.h>
 #include <iiwa_msgs/CartesianQuantity.h>
-#include <gripper_msgs/gripper_control.h>
+#include <gripper_msgs/GripperControl.h>
 
 static bool setPTPJointSpeedLimits(ros::NodeHandle& nh) {
 	ROS_INFO("Setting PTP joint speed limits...");
@@ -58,8 +58,8 @@ int main (int argc, char** argv) {
     ros::NodeHandle nh;
 
     //gripper setup
-    ros::ServiceClient gripper_client = nh.serviceClient<gripper_msgs::gripper_control>("gripper1/control_service");
-    gripper_msgs::gripper_control srv;
+    ros::ServiceClient gripper_client = nh.serviceClient<gripper_msgs::GripperControl>("gripper1/control_service");
+    gripper_msgs::GripperControl srv;
 
     //manipulator setup
     actionlib::SimpleActionClient<iiwa_msgs::MoveToCartesianPoseAction> cartesianPoseLinClient("/iiwa/action/move_to_cartesian_pose_lin", true);

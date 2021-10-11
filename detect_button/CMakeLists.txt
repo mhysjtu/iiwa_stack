@@ -142,6 +142,7 @@ target_link_libraries(
     action_demo
     ${catkin_LIBRARIES}
 )
+add_dependencies(action_demo ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 add_executable(action_cartesian src/action_cartesian.cpp)
 
@@ -149,13 +150,14 @@ target_link_libraries(
     action_cartesian
     ${catkin_LIBRARIES}
 )
+add_dependencies(action_cartesian ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 add_executable(detect_rotate_switch src/detect_rotate_switch.cpp)
 target_link_libraries(
     detect_rotate_switch
     ${catkin_LIBRARIES}
 )
-
+add_dependencies(detect_rotate_switch ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 # add_executable(detect_with_camera src/detect_with_camera.cpp)
 # target_link_libraries(
