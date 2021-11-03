@@ -159,6 +159,20 @@ target_link_libraries(
 )
 add_dependencies(detect_rotate_switch ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
+add_executable(iiwa_cartesian_test src/iiwa_cartesian_test.cpp)
+target_link_libraries(
+  iiwa_cartesian_test
+    ${catkin_LIBRARIES}
+)
+add_dependencies(iiwa_cartesian_test ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+add_executable(iiwa_rel_cartesian_test src/iiwa_rel_cartesian_test.cpp)
+target_link_libraries(
+  iiwa_rel_cartesian_test
+    ${catkin_LIBRARIES}
+)
+add_dependencies(iiwa_rel_cartesian_test ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
 # add_executable(detect_with_camera src/detect_with_camera.cpp)
 # target_link_libraries(
 #     detect_with_camera

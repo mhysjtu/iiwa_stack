@@ -32,7 +32,7 @@
 
 static bool setPTPJointSpeedLimits(ros::NodeHandle& nh) {
 	ROS_INFO("Setting PTP joint speed limits...");
-	ros::ServiceClient setPTPJointSpeedLimitsClient = nh.serviceClient<iiwa_msgs::SetPTPJointSpeedLimits>("/iiwa/configuration/setPTPJointLimits");
+	ros::ServiceClient setPTPJointSpeedLimitsClient = nh.serviceClient<iiwa_msgs::SetPTPJointSpeedLimits>("/iiwa1/configuration/setPTPJointLimits");
 	iiwa_msgs::SetPTPJointSpeedLimits jointSpeedLimits;
 	jointSpeedLimits.request.joint_relative_velocity = 0.2;
 	jointSpeedLimits.request.joint_relative_acceleration = 0.5;
@@ -51,7 +51,7 @@ static bool setPTPJointSpeedLimits(ros::NodeHandle& nh) {
 
 static bool setPTPCartesianSpeedLimits(ros::NodeHandle& nh) {
 	ROS_INFO("Setting PTP Cartesian speed limits...");
-	ros::ServiceClient setPTPCartesianSpeedLimitsClient = nh.serviceClient<iiwa_msgs::SetPTPCartesianSpeedLimits>("/iiwa/configuration/setPTPCartesianLimits");
+	ros::ServiceClient setPTPCartesianSpeedLimitsClient = nh.serviceClient<iiwa_msgs::SetPTPCartesianSpeedLimits>("/iiwa1/configuration/setPTPCartesianLimits");
 	iiwa_msgs::SetPTPCartesianSpeedLimits cartesianSpeedLimits;
 	cartesianSpeedLimits.request.maxCartesianVelocity = 0.5;
 	cartesianSpeedLimits.request.maxCartesianAcceleration = 0.5;
@@ -74,7 +74,7 @@ static bool setPTPCartesianSpeedLimits(ros::NodeHandle& nh) {
 
 static bool setEndpointFrame(ros::NodeHandle& nh, std::string frameId = "iiwa_link_ee") {
 	ROS_INFO_STREAM("Setting endpoint frame to \""<<frameId<<"\"...");
-	ros::ServiceClient setEndpointFrameClient = nh.serviceClient<iiwa_msgs::SetEndpointFrame>("/iiwa/configuration/setEndpointFrame");
+	ros::ServiceClient setEndpointFrameClient = nh.serviceClient<iiwa_msgs::SetEndpointFrame>("/iiwa1/configuration/setEndpointFrame");
 	iiwa_msgs::SetEndpointFrame endpointFrame;
 	endpointFrame.request.frame_id = frameId;
 	if (!setEndpointFrameClient.call(endpointFrame)) {
@@ -106,14 +106,9 @@ int main (int argc, char **argv)
 		return 1;
 	}
 
-	// Set endpoint frame to flange, so that our Cartesian target coordinates are tool independent
-	if (!setEndpointFrame(nh)) {
-		return 1;
-	}
-
 	// Create the action clients
 	// Passing "true" causes the clients to spin their own threads
-    actionlib::SimpleActionClient<iiwa_msgs::MoveToCartesianPoseAction> cartesianPoseLinClient("/iiwa/action/move_to_cartesian_pose", true);
+    actionlib::SimpleActionClient<iiwa_msgs::MoveToCartesianPoseAction> cartesianPoseLinClient("/iiwa1/action/move_to_cartesian_pose", true);
 //pointToPointCartesianMotion
 	ROS_INFO("Waiting for action servers to start...");
 	// Wait for the action servers to start
@@ -132,18 +127,19 @@ int main (int argc, char **argv)
     // cartesianPoseGoal.cartesian_pose.poseStamped.pose.orientation.z = -0.0541691859989;
     // cartesianPoseGoal.cartesian_pose.poseStamped.pose.orientation.w = -0.0167151689933;
     iiwa_msgs::MoveToCartesianPoseGoal cartesianPoseGoal;
-	cartesianPoseGoal.cartesian_pose.poseStamped.header.frame_id = "iiwa_link_0";
-	cartesianPoseGoal.cartesian_pose.poseStamped.pose.position.x = -0.618675630606;
-    cartesianPoseGoal.cartesian_pose.poseStamped.pose.position.y = 0.0902561322359;
-    cartesianPoseGoal.cartesian_pose.poseStamped.pose.position.z = -0.574701790009-0.1;//0.3698
+	cartesianPoseGoal.cartesian_pose.poseStamped.header.frame_id = "iiwa1_link_0";
+	cartesianPoseGoal.cartesian_pose.poseStamped.pose.position.x = -0.600444098078-0.01;
+    cartesianPoseGoal.cartesian_pose.poseStamped.pose.position.y = -0.355106546005-0.01;
+    cartesianPoseGoal.cartesian_pose.poseStamped.pose.position.z = -0.682034106837;//0.3698
 
-    cartesianPoseGoal.cartesian_pose.poseStamped.pose.orientation.x = -0.388212945011;
-    cartesianPoseGoal.cartesian_pose.poseStamped.pose.orientation.y = 0.921380996704;
-    cartesianPoseGoal.cartesian_pose.poseStamped.pose.orientation.z = 0.0184875117455;
-    cartesianPoseGoal.cartesian_pose.poseStamped.pose.orientation.w = -0.00245448822021;
+    cartesianPoseGoal.cartesian_pose.poseStamped.pose.orientation.x = 0.320560009636;
+    cartesianPoseGoal.cartesian_pose.poseStamped.pose.orientation.y = -0.739672912966;
+    cartesianPoseGoal.cartesian_pose.poseStamped.pose.orientation.z = 0.230175780285;
+    cartesianPoseGoal.cartesian_pose.poseStamped.pose.orientation.w = 0.545109510422;
 
-    cartesianPoseGoal.cartesian_pose.redundancy.status = -1;
-    cartesianPoseGoal.cartesian_pose.redundancy.turn = -1;
+    cartesianPoseGoal.cartesian_pose.redundancy.e1 = 0.418639355902;
+    cartesianPoseGoal.cartesian_pose.redundancy.status = 1;
+    cartesianPoseGoal.cartesian_pose.redundancy.turn = 82;
 	// Send goal to action server
 	cartesianPoseLinClient.sendGoal(cartesianPoseGoal);
 

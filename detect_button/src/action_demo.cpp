@@ -31,7 +31,7 @@
 
 static bool setPTPJointSpeedLimits(ros::NodeHandle& nh) {
 	ROS_INFO("Setting PTP joint speed limits...");
-	ros::ServiceClient setPTPJointSpeedLimitsClient = nh.serviceClient<iiwa_msgs::SetPTPJointSpeedLimits>("/iiwa/configuration/setPTPJointLimits");
+	ros::ServiceClient setPTPJointSpeedLimitsClient = nh.serviceClient<iiwa_msgs::SetPTPJointSpeedLimits>("/iiwa1/configuration/setPTPJointLimits");
 	iiwa_msgs::SetPTPJointSpeedLimits jointSpeedLimits;
 	jointSpeedLimits.request.joint_relative_velocity = 0.2;
 	jointSpeedLimits.request.joint_relative_acceleration = 0.5;
@@ -50,7 +50,7 @@ static bool setPTPJointSpeedLimits(ros::NodeHandle& nh) {
 
 static bool setPTPCartesianSpeedLimits(ros::NodeHandle& nh) {
 	ROS_INFO("Setting PTP Cartesian speed limits...");
-	ros::ServiceClient setPTPCartesianSpeedLimitsClient = nh.serviceClient<iiwa_msgs::SetPTPCartesianSpeedLimits>("/iiwa/configuration/setPTPCartesianLimits");
+	ros::ServiceClient setPTPCartesianSpeedLimitsClient = nh.serviceClient<iiwa_msgs::SetPTPCartesianSpeedLimits>("/iiwa1/configuration/setPTPCartesianLimits");
 	iiwa_msgs::SetPTPCartesianSpeedLimits cartesianSpeedLimits;
 	cartesianSpeedLimits.request.maxCartesianVelocity = 0.5;
 	cartesianSpeedLimits.request.maxCartesianAcceleration = 0.5;
@@ -73,7 +73,7 @@ static bool setPTPCartesianSpeedLimits(ros::NodeHandle& nh) {
 
 static bool setEndpointFrame(ros::NodeHandle& nh, std::string frameId = "iiwa_link_ee") {
 	ROS_INFO_STREAM("Setting endpoint frame to \""<<frameId<<"\"...");
-	ros::ServiceClient setEndpointFrameClient = nh.serviceClient<iiwa_msgs::SetEndpointFrame>("/iiwa/configuration/setEndpointFrame");
+	ros::ServiceClient setEndpointFrameClient = nh.serviceClient<iiwa_msgs::SetEndpointFrame>("/iiwa1/configuration/setEndpointFrame");
 	iiwa_msgs::SetEndpointFrame endpointFrame;
 	endpointFrame.request.frame_id = frameId;
 	if (!setEndpointFrameClient.call(endpointFrame)) {
@@ -112,7 +112,7 @@ int main (int argc, char **argv)
 
 	// Create the action clients
 	// Passing "true" causes the clients to spin their own threads
-	actionlib::SimpleActionClient<iiwa_msgs::MoveToJointPositionAction> jointPositionClient("/iiwa/action/move_to_joint_position", true);
+	actionlib::SimpleActionClient<iiwa_msgs::MoveToJointPositionAction> jointPositionClient("/iiwa1/action/move_to_joint_position", true);
 
 	ROS_INFO("Waiting for action servers to start...");
 	// Wait for the action servers to start

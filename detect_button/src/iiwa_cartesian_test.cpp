@@ -9,7 +9,7 @@
 
 static bool setPTPJointSpeedLimits(ros::NodeHandle& nh) {
 	ROS_INFO("Setting PTP joint speed limits...");
-	ros::ServiceClient setPTPJointSpeedLimitsClient = nh.serviceClient<iiwa_msgs::SetPTPJointSpeedLimits>("/iiwa/configuration/setPTPJointLimits");
+	ros::ServiceClient setPTPJointSpeedLimitsClient = nh.serviceClient<iiwa_msgs::SetPTPJointSpeedLimits>("/iiwa2/configuration/setPTPJointLimits");
 	iiwa_msgs::SetPTPJointSpeedLimits jointSpeedLimits;
 	jointSpeedLimits.request.joint_relative_velocity = 0.2;
 	jointSpeedLimits.request.joint_relative_acceleration = 0.5;
@@ -28,7 +28,7 @@ static bool setPTPJointSpeedLimits(ros::NodeHandle& nh) {
 
 static bool setPTPCartesianSpeedLimits(ros::NodeHandle& nh) {
 	ROS_INFO("Setting PTP Cartesian speed limits...");
-	ros::ServiceClient setPTPCartesianSpeedLimitsClient = nh.serviceClient<iiwa_msgs::SetPTPCartesianSpeedLimits>("/iiwa/configuration/setPTPCartesianLimits");
+	ros::ServiceClient setPTPCartesianSpeedLimitsClient = nh.serviceClient<iiwa_msgs::SetPTPCartesianSpeedLimits>("/iiwa2/configuration/setPTPCartesianLimits");
 	iiwa_msgs::SetPTPCartesianSpeedLimits cartesianSpeedLimits;
 	cartesianSpeedLimits.request.maxCartesianVelocity = 0.5;
 	cartesianSpeedLimits.request.maxCartesianAcceleration = 0.5;
@@ -51,7 +51,7 @@ static bool setPTPCartesianSpeedLimits(ros::NodeHandle& nh) {
 
 int main (int argc, char **argv)
 {
-	ros::init(argc, argv, "cartesian_motion_demo");
+	ros::init(argc, argv, "cartesian_rel_motion_test");
 	ros::NodeHandle nh;
 
 	// Set speed limit for motions in joint coordinates
@@ -66,41 +66,34 @@ int main (int argc, char **argv)
 
 	// Create the action clients
 	// Passing "true" causes the clients to spin their own threads
-    actionlib::SimpleActionClient<iiwa_msgs::MoveToCartesianPoseAction> cartesianPoseLinClient("/iiwa/action/move_to_cartesian_pose", true); //"/iiwa/action/move_to_cartesian_pose_lin"
+    actionlib::SimpleActionClient<iiwa_msgs::MoveToCartesianPoseAction> cartesianPoseRelClient("/iiwa2/action/move_to_cartesian_pose", true); //"/iiwa/action/move_to_cartesian_pose_lin"
 
 	ROS_INFO("Waiting for action servers to start...");
 	// Wait for the action servers to start
-    cartesianPoseLinClient.waitForServer();
+    cartesianPoseRelClient.waitForServer();
 
 
 	ROS_INFO("Action server started, moving to start pose...");
 	// Define a goal
-    iiwa_msgs::MoveToCartesianPoseGoal cartesianPoseGoal;
-	cartesianPoseGoal.cartesian_pose.poseStamped.header.frame_id = "iiwa_link_0";
-	cartesianPoseGoal.cartesian_pose.poseStamped.pose.position.x = -0.618675630606;
-    cartesianPoseGoal.cartesian_pose.poseStamped.pose.position.y = 0.0902561322359;
-    cartesianPoseGoal.cartesian_pose.poseStamped.pose.position.z = -0.574701790009-0.1;//0.3698
+    iiwa_msgs::MoveToCartesianPoseGoal cartesianPoseRelGoal;
+	cartesianPoseRelGoal.cartesian_pose.poseStamped.header.frame_id = "iiwa2_link_0";
+	cartesianPoseRelGoal.cartesian_pose.poseStamped.pose.position.x = 0;
+    cartesianPoseRelGoal.cartesian_pose.poseStamped.pose.position.y = 0;
+    cartesianPoseRelGoal.cartesian_pose.poseStamped.pose.position.z = 0.1;
 
-    cartesianPoseGoal.cartesian_pose.poseStamped.pose.orientation.x = -0.388212945011;
-    cartesianPoseGoal.cartesian_pose.poseStamped.pose.orientation.y = 0.921380996704;
-    cartesianPoseGoal.cartesian_pose.poseStamped.pose.orientation.z = 0.0184875117455;
-    cartesianPoseGoal.cartesian_pose.poseStamped.pose.orientation.w = -0.00245448822021;
-
-    cartesianPoseGoal.cartesian_pose.redundancy.status = 3;
-    cartesianPoseGoal.cartesian_pose.redundancy.turn = 30;
-    cartesianPoseGoal.cartesian_pose.redundancy.e1 = -106.92;//if not defined, will move to 0 degree!!!!!
+    cartesianPoseRelGoal.force_threshold = 5.0; 
 
 	// Send goal to action server
-	cartesianPoseLinClient.sendGoal(cartesianPoseGoal);
+	cartesianPoseRelClient.sendGoal(cartesianPoseRelGoal);
 
 	// Wait for the action to finish
-	bool finished_before_timeout = cartesianPoseLinClient.waitForResult(ros::Duration(20.0));
+	bool finished_before_timeout = cartesianPoseRelClient.waitForResult(ros::Duration(20.0));
 
 	if (!finished_before_timeout) {
 		ROS_WARN("iiwa motion timed out - exiting...");
 		return 0;
 	}
-	else if (!cartesianPoseLinClient.getResult()->success) {
+	else if (!cartesianPoseRelClient.getResult()->success) {
 		ROS_ERROR("Action execution failed - exiting...");
 		return 0;
 	}
