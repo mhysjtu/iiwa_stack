@@ -30,11 +30,11 @@ static bool setPTPCartesianSpeedLimits(ros::NodeHandle& nh) {
 	ROS_INFO("Setting PTP Cartesian speed limits...");
 	ros::ServiceClient setPTPCartesianSpeedLimitsClient = nh.serviceClient<iiwa_msgs::SetPTPCartesianSpeedLimits>("/iiwa2/configuration/setPTPCartesianLimits");
 	iiwa_msgs::SetPTPCartesianSpeedLimits cartesianSpeedLimits;
-	cartesianSpeedLimits.request.maxCartesianVelocity = 0.5;
-	cartesianSpeedLimits.request.maxCartesianAcceleration = 0.5;
+	cartesianSpeedLimits.request.maxCartesianVelocity = 0.1;
+	cartesianSpeedLimits.request.maxCartesianAcceleration = 0.1;
 	cartesianSpeedLimits.request.maxCartesianJerk = -1.0; // ignore
-	cartesianSpeedLimits.request.maxOrientationVelocity = 0.5;
-	cartesianSpeedLimits.request.maxOrientationAcceleration = 0.5;
+	cartesianSpeedLimits.request.maxOrientationVelocity = 0.2;
+	cartesianSpeedLimits.request.maxOrientationAcceleration = 0.2;
 	cartesianSpeedLimits.request.maxOrientationJerk = -1.0; // ignore
 	if (!setPTPCartesianSpeedLimitsClient.call(cartesianSpeedLimits)) {
 		ROS_ERROR("Failed.");
